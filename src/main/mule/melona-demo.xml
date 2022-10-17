@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="dedc337f-5e34-4b5b-affb-4b9054ff02ae" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="melona-demoFlow" doc:id="68ed3cbc-b652-415b-b2f0-3bf7a0b1f476" >
+		<http:listener doc:name="Listener" doc:id="93d58ded-fb9a-4861-a1e1-0d67819d9d60" config-ref="HTTP_Listener_config" path="/melona"/>
+		<set-payload value='#[" Melona yenea Lij you are my world love you so much"]' doc:name="Set Payload" doc:id="1216bce6-f4c2-4c65-aacb-d808249c9005" />
+		<logger level="INFO" doc:name="Logger" doc:id="eb195418-6629-4595-b17a-0719c4884beb" message='#["my lovely daughter"]'/>
+		<ee:transform doc:name="Transform Message" doc:id="652f605c-0e05-429d-813a-e574215e9cde" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="melona-demoFlow1" doc:id="32e70bdc-1376-4f94-aa1e-08761cdfb932" >
+		<http:listener doc:name="Listener" doc:id="86716775-dd73-45da-8d14-da88f71fcbc8" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="0157cae9-d90f-4047-8a02-f20c80859c36" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"hi " ++ payload.name ++ " you are my world and i " ++  payload.org ++ " you"
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
